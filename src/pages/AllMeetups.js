@@ -7,20 +7,21 @@ function AllMeetupsPage() {
   const [loadedMeetups, setLoadedMeetups] = useState([]);
 
   useEffect(() => {
-    setIsLoading(true);
-    fetch(
-      'https://react-getting-started-48dec-default-rtdb.firebaseio.com/meetups.json'
-    )
-      .then((response) => {
-        return response.json();
-      })
-      .then((data) => {
+    async function fetchData() {
+        setIsLoading(true);
+        
+        const data = await fetch(
+          "https://react-getting-started-48dec-default-rtdb.firebaseio.com/meetups.json"
+        );
+
+        const responseJson = await data.json();
+
         const meetups = [];
 
-        for (const key in data) {
+        for (const key in responseJson) {
           const meetup = {
             id: key,
-            ...data[key]
+            ...data[key],
           };
 
           meetups.push(meetup);
@@ -28,7 +29,10 @@ function AllMeetupsPage() {
 
         setIsLoading(false);
         setLoadedMeetups(meetups);
-      });
+    };
+
+    fetchData();
+    
   }, []);
 
   if (isLoading) {
