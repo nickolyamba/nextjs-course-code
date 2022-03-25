@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 
 import MeetupList from '../components/meetups/MeetupList';
+// import dataMock from '../dataMock';
 
 function AllMeetupsPage() {
   const [isLoading, setIsLoading] = useState(true);
@@ -9,19 +10,19 @@ function AllMeetupsPage() {
   useEffect(() => {
     async function fetchData() {
         setIsLoading(true);
-        
+
         const data = await fetch(
-          "https://react-getting-started-48dec-default-rtdb.firebaseio.com/meetups.json"
+          "https://zz-prj-react-default-rtdb.firebaseio.com/meetups.json"
         );
 
         const responseJson = await data.json();
 
         const meetups = [];
 
-        for (const key in responseJson) {
+        for (const [key, meetupObj] of Object.entries(responseJson)) {
           const meetup = {
             id: key,
-            ...data[key],
+            ...meetupObj,
           };
 
           meetups.push(meetup);

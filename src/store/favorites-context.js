@@ -12,6 +12,7 @@ export function FavoritesContextProvider(props) {
   const [userFavorites, setUserFavorites] = useState([]);
 
   function addFavoriteHandler(favoriteMeetup) {
+    // callback is called async with prev value of state
     setUserFavorites((prevUserFavorites) => {
       return [...prevUserFavorites, favoriteMeetup];
     });
