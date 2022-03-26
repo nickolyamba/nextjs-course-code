@@ -15,7 +15,7 @@ function ClientProjectsPage() {
 
   return (
     <div>
-      <h1>The Projects of a Given Client</h1>
+      <h1>The Projects of a {router.query.id}</h1>
       <button onClick={loadProjectHandler}>Load Project A</button>
     </div>
   );
