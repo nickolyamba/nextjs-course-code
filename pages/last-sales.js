@@ -1,14 +1,17 @@
 import { useEffect, useState } from 'react';
 import useSWR from 'swr';
 
+const SALES_URL = 'https://zz-prj-react-default-rtdb.firebaseio.com/sales.json';
+
 function LastSalesPage(props) {
   const [sales, setSales] = useState(props.sales);
   // const [isLoading, setIsLoading] = useState(false);
 
-  const { data, error } = useSWR(
-    'https://nextjs-course-c81cc-default-rtdb.firebaseio.com/sales.json'
-  );
+  const { data, error } = useSWR(SALES_URL);
 
+  // useEffect is used to format the data recieved from the API
+  // Alternatively could provide a cusotom fetcher 
+  // function to useSWR as 2nd arg
   useEffect(() => {
     if (data) {
       const transformedSales = [];
@@ -26,11 +29,13 @@ function LastSalesPage(props) {
   }, [data]);
 
   // useEffect(() => {
-  //   setIsLoading(true);
-  //   fetch('https://nextjs-course-c81cc-default-rtdb.firebaseio.com/sales.json')
-  //     .then((response) => response.json())
-  //     .then((data) => {
-  //       const transformedSales = [];
+  //   async function getSales() {
+  //     setIsLoading(true);
+
+  //     const response = await fetch(SALES_URL);
+  //     const data = await response.json();
+
+  //     const transformedSales = [];
 
   //       for (const key in data) {
   //         transformedSales.push({
@@ -42,7 +47,9 @@ function LastSalesPage(props) {
 
   //       setSales(transformedSales);
   //       setIsLoading(false);
-  //     });
+  //   }
+
+  //   getSales();
   // }, []);
 
   if (error) {
@@ -65,10 +72,10 @@ function LastSalesPage(props) {
 }
 
 export async function getStaticProps() {
-  const response = await fetch(
-    'https://nextjs-course-c81cc-default-rtdb.firebaseio.com/sales.json'
-  );
+  const response = await fetch(SALES_URL);
   const data = await response.json();
+
+  console.log({ staticSalesBackend: data });
 
   const transformedSales = [];
 
@@ -80,7 +87,10 @@ export async function getStaticProps() {
     });
   }
 
-  return { props: { sales: transformedSales } };
+  return { 
+    props: { sales: transformedSales },
+    // revalidate: 10
+  };
 }
 
 export default LastSalesPage;
