@@ -6,33 +6,28 @@ import ResultsTitle from '../../components/events/results-title';
 import Button from '../../components/ui/button';
 import ErrorAlert from '../../components/ui/error-alert';
 
+function getErrorUi(errorMsg) {
+    return (
+        <Fragment>
+            <ErrorAlert>
+                <p>{errorMsg}</p>
+            </ErrorAlert>
+            <div className='center'>
+                <Button link='/events'>Show All Events</Button>
+            </div>
+        </Fragment>
+    );
+}
+
 function FilteredEventsPage(props) {
     const { events, dateObj, isFilterError } = props;
 
     if (isFilterError) {
-        return (
-            <Fragment>
-                <ErrorAlert>
-                    <p>{props.errorMsg}</p>
-                </ErrorAlert>
-                <div className='center'>
-                    <Button link='/events'>Show All Events</Button>
-                </div>
-            </Fragment>
-        );
+        return getErrorUi(props.errorMsg);
     }
 
     if (!events || events.length === 0) {
-        return (
-            <Fragment>
-                <ErrorAlert>
-                    <p>No events found for the chosen filter!</p>
-                </ErrorAlert>
-                <div className='center'>
-                    <Button link='/events'>Show All Events</Button>
-                </div>
-            </Fragment>
-        );
+        return getErrorUi('No events found for the chosen filter!');
     }
 
     const date = new Date(dateObj.year, dateObj.month - 1);
