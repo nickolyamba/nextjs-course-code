@@ -16,3 +16,5 @@ function newsLetterHandler(req, res) {
         return res.status(400).json({ message: 'Invalid REST Method' });
     }
 }
+
+export default newsLetterHandler;
